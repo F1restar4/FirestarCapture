@@ -12,7 +12,6 @@ namespace FirestarCapture
 	public class Capture : IDisposable
 	{
 		Overlay Overlay;
-		bool AvoidRecursion = false;
 		Point FirstPoint;
 		Point SecondPoint;
 		Rectangle rect = new Rectangle();
