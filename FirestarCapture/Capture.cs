@@ -13,14 +13,8 @@ namespace FirestarCapture
 
 		public void Dispose()
 		{
-			brush.Dispose();
-			Overlay.MouseDown -= ClickDown;
-			Overlay.MouseUp -= ClickRelease;
-			Overlay.KeyPress -= RegisterKey;
-			Overlay.MouseMove -= UpdateRectangle;
-			Overlay.Paint -= OnPaint;
 			Overlay.Dispose();
-			GC.Collect();
+			brush.Dispose();
 		}
 
 		public void StartCapture()
