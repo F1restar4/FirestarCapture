@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Drawing.Imaging;
+﻿
 
 namespace FirestarCapture
 {
@@ -15,13 +8,11 @@ namespace FirestarCapture
 		Point FirstPoint;
 		Point SecondPoint;
 		Rectangle rect = new Rectangle();
-		Pen pen = new Pen(Brushes.White, 10);
 		bool MouseDown = false;
 		SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
 
 		public void Dispose()
 		{
-			pen.Dispose();
 			brush.Dispose();
 			Overlay.MouseDown -= ClickDown;
 			Overlay.MouseUp -= ClickRelease;
