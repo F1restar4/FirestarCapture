@@ -63,9 +63,9 @@ namespace FirestarCapture.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon test {
+        internal static System.Drawing.Icon Alex_Headshot {
             get {
-                object obj = ResourceManager.GetObject("test", resourceCulture);
+                object obj = ResourceManager.GetObject("Alex_Headshot", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
