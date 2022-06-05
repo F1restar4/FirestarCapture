@@ -84,6 +84,8 @@ namespace FirestarCapture
 			int Y = Math.Min(FirstPoint.Y, SecondPoint.Y);
 			var width = Math.Abs(FirstPoint.X - SecondPoint.X);
 			var height = Math.Abs(FirstPoint.Y - SecondPoint.Y);
+			if (width == 0 || height == 0)
+				return;
 			var img = new Bitmap(width, height);
 			var gr = Graphics.FromImage(img);
 			gr.CopyFromScreen(X, Y, 0, 0, img.Size);
