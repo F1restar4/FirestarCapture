@@ -53,8 +53,9 @@ namespace FirestarCapture
 			shortcutHandler.RegisterHotkey();
 			shortcutHandler.TriggerOnKey += CaptureClick;
 			Keybindingsform.SubmitButtonTrigger += SubmitKeybinding;
+			this.ThreadExit += ExitThread;
 		}
-
+		
 		public void CaptureClick(object? sender, EventArgs e)
 		{
 			var Capture = new Capture();
@@ -65,6 +66,11 @@ namespace FirestarCapture
 		{
 			icon.Visible = false;
 			Application.Exit();
+		}
+
+		private void ExitThread(object? sender, EventArgs e)
+		{
+			shortcutHandler.UnRegisterHotkey();
 		}
 
 		private void SubmitKeybinding(object? sender, ControlsSubmitEventArgs e)
