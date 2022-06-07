@@ -1,4 +1,4 @@
-﻿
+﻿using System.Drawing.Imaging;
 
 namespace FirestarCapture
 {
@@ -86,7 +86,7 @@ namespace FirestarCapture
 			var height = Math.Abs(FirstPoint.Y - SecondPoint.Y);
 			if (width == 0 || height == 0)
 				return;
-			var img = new Bitmap(width, height);
+			var img = new Bitmap(width, height, PixelFormat.Format32bppRgb);
 			var gr = Graphics.FromImage(img);
 			gr.CopyFromScreen(X, Y, 0, 0, img.Size);
 			Clipboard.SetImage(img);
