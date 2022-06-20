@@ -21,6 +21,7 @@ namespace FirestarCapture
 		{
 			Overlay = new Overlay();
 			Overlay.Visible = true;
+			Overlay.LostFocus += (sender, e) => Overlay.Focus();
 			Overlay.MouseDown += ClickDown;
 			Overlay.MouseUp += ClickRelease;
 			Overlay.KeyPress += RegisterKey;
