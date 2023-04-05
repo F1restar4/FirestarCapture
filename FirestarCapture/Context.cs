@@ -18,13 +18,6 @@ namespace FirestarCapture
 			item.Click += CaptureClick;
 			strip.Items.Add(item);
 
-			item = new ToolStripMenuItem("Exit")
-			{
-				Name = "Exit"
-			};
-			item.Click += ExitClick;
-			strip.Items.Add(item);
-
 			item = new ToolStripMenuItem("Change binding")
 			{
 				Name = "ChangeBinding"
@@ -40,6 +33,13 @@ namespace FirestarCapture
 				Keybindingsform.SetKeybind = shortcutHandler.hotkey;
 				Keybindingsform.Show();
 			};
+			strip.Items.Add(item);
+
+			item = new ToolStripMenuItem("Exit")
+			{
+				Name = "Exit"
+			};
+			item.Click += ExitClick;
 			strip.Items.Add(item);
 
 			icon = new NotifyIcon()
@@ -86,6 +86,7 @@ namespace FirestarCapture
 	{
 		public Hotkey hotkey = new Hotkey(KeyModifiers.CONTROL | KeyModifiers.SHIFT, Keys.C);
 		public event EventHandler TriggerOnKey;
+		public DateTime LastTrigger = DateTime.Now;
 
 		public void RegisterHotkey()
 		{
@@ -114,15 +115,14 @@ namespace FirestarCapture
 		protected override void WndProc(ref Message m)
 		{
 			base.WndProc(ref m);
-			if (m.Msg != 0x0312)
+			if (m.Msg != 0x0312 || DateTime.Now.Subtract(LastTrigger).Milliseconds < 500)
 				return;
 			Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF); 
 			KeyModifiers modifier = (KeyModifiers)((int)m.LParam & 0xFFFF);
 			if (key == hotkey.key && modifier == hotkey.Modifiers)
 			{
-				EventHandler KeyTrigger = TriggerOnKey;
-				if (KeyTrigger != null)
-					KeyTrigger(this, new EventArgs());
+				LastTrigger = DateTime.Now;
+				TriggerOnKey?.Invoke(this, new EventArgs());
 			}
 
 		}
