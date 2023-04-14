@@ -1,4 +1,6 @@
 ﻿
+using System.Reflection;
+
 namespace FirestarCapture
 {
 	public class Context : ApplicationContext
@@ -6,9 +8,12 @@ namespace FirestarCapture
 		NotifyIcon icon;
 		ShortcutHandler shortcutHandler = new ShortcutHandler();
 		KeyBind Keybindingsform = new KeyBind();
+		bool OpenOnStartEnabled = false;
+		readonly string AutoStartupFileLoc = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\FirestarCapture.bat";
+
 		public Context()
 		{
-
+			OpenOnStartEnabled = IsAutoStartupEnabled();
 			var strip = new ContextMenuStrip();
 
 			var item = new ToolStripMenuItem("Capture")
@@ -32,6 +37,20 @@ namespace FirestarCapture
 				Keybindingsform.ChangeBindingLabel(shortcutHandler.hotkey);
 				Keybindingsform.SetKeybind = shortcutHandler.hotkey;
 				Keybindingsform.Show();
+			};
+			
+			strip.Items.Add(item);
+
+			item = new ToolStripMenuItem("Open on startup")
+			{
+				Name = "OpenOnStartup",
+				Checked = OpenOnStartEnabled,
+			};
+			item.Click += (s, e) =>
+			{
+				var self = s as ToolStripMenuItem;
+				self.Checked = !self.Checked;
+				ToggleStartupShortcut();
 			};
 			strip.Items.Add(item);
 
@@ -80,6 +99,19 @@ namespace FirestarCapture
 			shortcutHandler.RegisterHotkey();
 			File.WriteAllText("keybind.txt", $"{(int)e.hotkey.Modifiers}\n{(int)e.hotkey.key}");
 		}
+
+		private void ToggleStartupShortcut()
+		{
+			if (OpenOnStartEnabled)
+				File.Delete(AutoStartupFileLoc);
+			else
+				File.WriteAllText(AutoStartupFileLoc, $"start /d \"{Environment.CurrentDirectory}\" FirestarCapture.exe");
+
+			OpenOnStartEnabled = IsAutoStartupEnabled();
+		}
+
+		private bool IsAutoStartupEnabled()
+			=> File.Exists(AutoStartupFileLoc);
 	}
 
 	public class ShortcutHandler : Form
