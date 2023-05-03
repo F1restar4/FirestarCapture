@@ -9,7 +9,7 @@
     <Company>Firestar4</Company>
     <SignAssembly>True</SignAssembly>
     <ApplicationIcon>Resources\Alex_Headshot.ico</ApplicationIcon>
-    <Version>1.0.3</Version>
+    <Version>1.0.3-Rev1</Version>
   </PropertyGroup>
 
   <ItemGroup>
