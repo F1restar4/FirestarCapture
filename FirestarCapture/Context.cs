@@ -147,7 +147,7 @@ namespace FirestarCapture
 		protected override void WndProc(ref Message m)
 		{
 			base.WndProc(ref m);
-			if (m.Msg != 0x0312 || DateTime.Now.Subtract(LastTrigger).Milliseconds < 500)
+			if (m.Msg != 0x0312 && DateTime.Now.Subtract(LastTrigger).Milliseconds < 500)
 				return;
 			Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF); 
 			KeyModifiers modifier = (KeyModifiers)((int)m.LParam & 0xFFFF);
