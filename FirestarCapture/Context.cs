@@ -9,6 +9,7 @@ namespace FirestarCapture
 		ShortcutHandler shortcutHandler = new ShortcutHandler();
 		KeyBind Keybindingsform = new KeyBind();
 		bool OpenOnStartEnabled = false;
+		DateTime LastTrigger = DateTime.Now;
 		readonly string AutoStartupFileLoc = Environment.GetFolderPath(Environment.SpecialFolder.Startup) + "\\FirestarCapture.bat";
 
 		public Context()
@@ -77,6 +78,9 @@ namespace FirestarCapture
 		
 		public void CaptureClick(object? sender, EventArgs e)
 		{
+			if (DateTime.Now.Subtract(LastTrigger).TotalMilliseconds < 500)
+				return;
+			LastTrigger = DateTime.Now;
 			var Capture = new Capture();
 			Capture.StartCapture();
 		}
@@ -147,13 +151,12 @@ namespace FirestarCapture
 		protected override void WndProc(ref Message m)
 		{
 			base.WndProc(ref m);
-			if (m.Msg != 0x0312 && DateTime.Now.Subtract(LastTrigger).Milliseconds < 500)
+			if (m.Msg != 0x0312)
 				return;
 			Keys key = (Keys)(((int)m.LParam >> 16) & 0xFFFF); 
 			KeyModifiers modifier = (KeyModifiers)((int)m.LParam & 0xFFFF);
 			if (key == hotkey.key && modifier == hotkey.Modifiers)
 			{
-				LastTrigger = DateTime.Now;
 				TriggerOnKey?.Invoke(this, new EventArgs());
 			}
 
