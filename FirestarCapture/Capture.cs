@@ -7,6 +7,7 @@ namespace FirestarCapture
 		Overlay Overlay;
 		Point FirstPoint;
 		Point SecondPoint;
+		Point RelativePoint;
 		Rectangle rect = new Rectangle();
 		bool MouseDown = false;
 		SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
@@ -20,6 +21,9 @@ namespace FirestarCapture
 		public void StartCapture()
 		{
 			Overlay = new Overlay();
+			var target = Screen.FromPoint(Cursor.Position);
+			Overlay.Location = new Point(target.WorkingArea.Left, target.WorkingArea.Top);
+			Overlay.Size = new Size(target.WorkingArea.Width, target.WorkingArea.Height);
 			Overlay.Visible = true;
 			Overlay.LostFocus += (sender, e) => Overlay.Focus();
 			Overlay.MouseDown += ClickDown;
@@ -52,7 +56,7 @@ namespace FirestarCapture
 			if (e.Button != MouseButtons.Left)
 				return;
 			MouseDown = false;
-			SecondPoint = e.Location;
+			SecondPoint = Cursor.Position;
 			Overlay.Visible = false;
 			Overlay.Dispose();
 			DoCapture();
@@ -62,8 +66,9 @@ namespace FirestarCapture
 		{
 			if (e.Button != MouseButtons.Left)
 				return;
-			FirstPoint = e.Location;
-			rect.Location = FirstPoint;
+			FirstPoint = Cursor.Position;
+			RelativePoint = e.Location;
+			rect.Location = RelativePoint;
 			MouseDown = true;
 		}
 
@@ -71,10 +76,10 @@ namespace FirestarCapture
 		{
 			if (!MouseDown)
 				return;
-			var X = Math.Min(FirstPoint.X, e.X);
-			var Y = Math.Min(FirstPoint.Y, e.Y);
-			var X2 = Math.Max(FirstPoint.X, e.X);
-			var Y2 = Math.Max(FirstPoint.Y, e.Y);
+			var X = Math.Min(RelativePoint.X, e.X);
+			var Y = Math.Min(RelativePoint.Y, e.Y);
+			var X2 = Math.Max(RelativePoint.X, e.X);
+			var Y2 = Math.Max(RelativePoint.Y, e.Y);
 			rect = Rectangle.FromLTRB(X, Y, X2, Y2);
 			Overlay.Invalidate();
 		}
@@ -89,6 +94,7 @@ namespace FirestarCapture
 				return;
 			var img = new Bitmap(width, height, PixelFormat.Format32bppRgb);
 			var gr = Graphics.FromImage(img);
+
 			gr.CopyFromScreen(X, Y, 0, 0, img.Size);
 			Clipboard.SetImage(img);
 			this.Dispose();

@@ -40,6 +40,7 @@
 			this.MaximizeBox = false;
 			this.Name = "Overlay";
 			this.Opacity = 0.2D;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.TopMost = true;
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.ResumeLayout(false);
