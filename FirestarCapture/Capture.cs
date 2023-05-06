@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using FirestarCapture.Properties;
+using System.Drawing.Imaging;
 
 namespace FirestarCapture
 {
@@ -24,6 +25,7 @@ namespace FirestarCapture
 			var target = Screen.FromPoint(Cursor.Position);
 			Overlay.Location = new Point(target.WorkingArea.Left, target.WorkingArea.Top);
 			Overlay.Size = new Size(target.WorkingArea.Width, target.WorkingArea.Height);
+			Overlay.Icon = Resources.Alex_Headshot;
 			Overlay.Visible = true;
 			Overlay.LostFocus += (sender, e) => Overlay.Focus();
 			Overlay.MouseDown += ClickDown;
